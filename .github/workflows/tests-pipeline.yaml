@@ -1,0 +1,43 @@
+name: tests-pipeline
+run-name: Run Tests
+on:
+  workflow_dispatch: # manual trigger
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'src/**'
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: corretto
+          java-version: 17
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+      - name: Run unit tests with gradle
+        run: ./gradlew test
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: corretto
+          java-version: 17
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        # This will invoke testcontainers, which requires Docker installed.
+        # Luckily, the GitHub runners already have Docker.
+      - name: Run integration tests with gradle
+        run: ./gradlew integrationTest
+    needs: unit-tests
