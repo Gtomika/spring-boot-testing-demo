@@ -23,3 +23,9 @@ is provided by the [Testcontainers framework](https://testcontainers.com/).
 
 Test suite is not complete, but the other endpoints
 could be tested similarly.
+
+## CI/CD
+
+[Sample GitHub Actions pipeline](.github/workflows/tests-pipeline.yaml) is provided which 
+runs the unit and integration tests, with Gradle. This pipeline can be triggered 
+manually, or by pushing source code changes to `master`.
